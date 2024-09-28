@@ -2,3 +2,4 @@
 
 > Sistema de modulos de JavaScript
 > WebWorkers
+> Templete en HTML

@@ -1,11 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simplex WebLLM</title>
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    
+    <main>
+        <ul>
+            <li class="message bot">
+                <span>GPT</span>
+                <span>Esta es la respuesta del bot</span>
+            </li>
+
+            <li class="message user"></li>
+                <span>Tú</span>
+                <span>Esta es la respuesta del usuario</span>
+            </li>
+
+            <li class="message user"></li>
+                <span>Tú</span>
+                <span>Esta es una respuesta muy larga del usuario para ver
+                    que todo funcion bien y no se salga el scroll de la pantalla
+                </span>
+            </li>
+        </ul>
+    </main>
+
+    <form>
+        <input placeholder="Escribe tu mensaje aqui ...">
+        <button>Enviar</button>
+    </form>
+
+    <template id="message-template">
+        <li class="message">
+            <span></span>
+            <span></span>
+        </li>
+    </template>
 </body>
+
 </html>
