@@ -19,6 +19,7 @@ main {
     padding: 8px;
     margin-bottom: 16px;
     overflow-y: auto;
+    scroll-behavior: smooth;
 }
 
 ul {
@@ -89,6 +90,12 @@ form {
         cursor: pointer;
         padding: 8px;
         transition: background .3s ease;
+
+        &[disabled] {
+            background: #ccc;
+            opacity: 0.6;
+            pointer-events: none; /* Hace que el botón no se pueda pulsar */
+        }
 
         &:hover {
             background: rgb(0, 104, 173);
