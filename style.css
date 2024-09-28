@@ -108,6 +108,17 @@ form {
     }
 }
 
+small {
+    font-size: 10px;
+    color: #555;
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 400px;
+}
+
 @media (max-width: 600px) {
     main {
         max-width: 85%;

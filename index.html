@@ -7,7 +7,9 @@
     <title>Simplex WebLLM</title>
     <link rel="stylesheet" href="style.css">
 
-    <script type="module">
+    <script type="module"> // Enmascript Modules
+        import { CreateMLCEngine } from 'https://esm.run/@mlc-ai/web-llm';
+
         const $ = el => document.querySelector(el); // Función para seleccionar elementos
         const $form = $('form');
         const $input = $('input');
@@ -15,6 +17,25 @@
         const $messages = $('ul');
         const $container = $('main');
         const $button = $('button');
+        const $info = $('small');
+
+        let messages = [];
+
+        const SELECTED_MODEL = 'gemma-2-2b-it-q4f32_1-MLC';
+
+        const engine = await CreateMLCEngine(
+            SELECTED_MODEL,
+            {
+                initProgressCallback: (info) => {
+                    console.log('initProgressCallback', info);
+                    $info.textContent = `${info.text}%`;
+
+                    if (info.progress === 1) {
+                        $button.removeAttribute('disabled');
+                    }
+                }
+            }
+        )
 
         $form.addEventListener('submit', (event) => {
             event.preventDefault();
@@ -74,8 +95,10 @@
 
     <form>
         <input placeholder="Escribe tu mensaje aqui ...">
-        <button>Enviar</button>
+        <button disabled>Enviar</button>
     </form>
+
+    <small>&nbsp;</small>
 
     <template id="message-template">
         <li class="message">
