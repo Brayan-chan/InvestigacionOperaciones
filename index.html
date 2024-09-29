@@ -37,7 +37,7 @@
             }
         )
 
-        $form.addEventListener('submit', (event) => {
+        $form.addEventListener('submit', async (event) => {
             event.preventDefault();
             const messageText = $input.value.trim(); // Elimina espacios en blanco al inicio y al final
 
@@ -48,10 +48,11 @@
             addMessage(messageText, 'user');
             $button.setAttribute('disabled', 'true');
 
-            setTimeout(() => {
-                addMessage('Esta es la respuesta del bot', 'bot');
-                $button.removeAttribute('disabled');
-            }, 2000);
+            const reply = await engine.chat.completions.create({
+                messages: [...messages, {role: 'user', content: messageText}]
+            })
+
+            console.log(reply);
         })
 
         function addMessage(text, sender) {
