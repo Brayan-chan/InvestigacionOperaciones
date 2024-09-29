@@ -54,14 +54,20 @@
             }
             messages.push(userMessage);
 
-            const reply = await engine.chat.completions.create({
-                messages
+            const chunks = await engine.chat.completions.create({
+                messages,
+                stream: true
             })
 
+            let reply = '';
+
+            for await (const chunk of chunks) {
+                
+                console.log(chunk.choices)
+            }
+
             $button.removeAttribute('disabled');
-            const botMessage = reply.choices[0].message
-            messages.push(botMessage)
-            addMessage(botMessage.content, 'bot');
+
         })
 
         function addMessage(text, sender) {
