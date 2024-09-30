@@ -67,8 +67,10 @@
                 const [choice] = chunk.choices;
                 const content = choice?.delta?.content ?? '';
                 reply += content;
-                $botMessage.textContent = reply;
-            }
+                
+                // Formatear el texto recibido para aplicar negritas
+                $botMessage.innerHTML = formatMessage(reply);
+            }            
 
             $button.removeAttribute('disabled');
             messages.push({
@@ -95,6 +97,28 @@
 
             return $text;
         }
+
+        function formatMessage(text) {
+            // Convertir encabezados ## a <h2>
+            text = text.replace(/^## (.*)$/gm, '<h2>$1</h2>');
+        
+            // Convertir listas con * a <ul><li>...</li></ul>
+            text = text.replace(/^\* (.*)$/gm, '<ul><li>$1</li></ul>');
+        
+            // Convertir texto en **negritas** a <strong>
+            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+            // Convertir bloques de código con ``` a <pre><code>...</code></pre>
+            text = text.replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>');
+        
+            // Convertir texto en *cursiva* a <em>
+            text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        
+            // Eliminar líneas vacías generadas por listas o encabezados
+            text = text.replace(/<\/ul>\n<ul>/g, '');
+        
+            return text;
+        }                
     </script>
 </head>
 
