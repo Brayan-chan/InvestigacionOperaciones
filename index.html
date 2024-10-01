@@ -21,7 +21,7 @@
 
         let messages = [];
 
-        const SELECTED_MODEL = 'gemma-2-2b-it-q4f32_1-MLC';
+        const SELECTED_MODEL = 'Llama-3.2-1B-Instruct-q4f16_1-MLC';
 
         const engine = await CreateMLCEngine(
             SELECTED_MODEL,
@@ -114,11 +114,43 @@
             // Convertir texto en *cursiva* a <em>
             text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
         
+            // Convertir tablas en Markdown a tablas HTML
+            text = text.replace(/((\|.*\|)\n)+/g, function(match) {
+                let rows = match.trim().split('\n');
+                let table = '<table>';
+                rows.forEach((row, index) => {
+                    let cells = row.split('|').slice(1, -1); // Eliminar bordes
+                    if (index === 1) return; // Ignorar la línea separadora "| --- | --- |"
+                    table += index === 0 ? '<tr>' : '<tr>';
+                    cells.forEach((cell, i) => {
+                        if (index === 0) {
+                            table += `<th>${cell.trim()}</th>`; // Encabezado de tabla
+                        } else {
+                            table += `<td>${cell.trim()}</td>`; // Celda de tabla
+                        }
+                    });
+                    table += '</tr>';
+                });
+                table += '</table>';
+                return table;
+            });
+        
+            // Convertir dobles saltos de línea (párrafo) a <p>
+            text = text.replace(/\n{2,}/g, '</p><p>');
+        
+            // Convertir saltos de línea simples a <br>
+            text = text.replace(/\n/g, '<br>');
+        
+            // Agregar etiquetas <p> al principio y final del texto si no es una tabla o código
+            if (!text.startsWith('<table>') && !text.startsWith('<pre>')) {
+                text = `<p>${text}</p>`;
+            }
+        
             // Eliminar líneas vacías generadas por listas o encabezados
             text = text.replace(/<\/ul>\n<ul>/g, '');
-        
+            
             return text;
-        }                
+        }                        
     </script>
 </head>
 
